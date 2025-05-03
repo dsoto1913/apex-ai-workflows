@@ -1,29 +1,63 @@
-# Example render.yaml for n8n + Redis
 services:
-  - type: redis
-    name: redis
-    plan: starter
-
   - type: web
-    name: n8n
+    name: apex-ai-n8n
     env: docker
-    image: n8nio/n8n:latest
-    plan: starter
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: oregon
+    disk:
+      name: n8n-data
+      mountPath: /data
+      sizeGB: 1
     envVars:
+      - key: N8N_HOST
+        value: apex-ai-n8n.onrender.com
+      - key: N8N_PORT
+        value: 5678
+      - key: N8N_PROTOCOL
+        value: https
+      - key: NODE_ENV
+        value: production
+      - key: WEBHOOK_URL
+        value: https://apex-ai-n8n.onrender.com
+      - key: TWILIO_ACCOUNT_SID
+        sync: false # You'll enter this manually in Render
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
       - key: REDIS_HOST
         fromService:
-          name: redis
+          type: redis
+          name: apex-ai-redis
           property: host
       - key: REDIS_PORT
         fromService:
-          name: redis
+          type: redis
+          name: apex-ai-redis
           property: port
-      - key: N8N_BASIC_AUTH_ACTIVE
-        value: "true"
-      - key: N8N_BASIC_AUTH_USER
-        value: "<your‑username>"
-      - key: N8N_BASIC_AUTH_PASSWORD
-        value: "<your‑password>"
-      - key: NODE_ENV
-        value: production
-    # (add ports, health checks, volumes, etc. as needed)
+      - key: REDIS_PASSWORD
+        fromService:
+          type: redis
+          name: apex-ai-redis
+          property: password
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ELEVENLABS_API_KEY
+        sync: false
+      - key: DEEPGRAM_API_KEY
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: 465
+      - key: SMTP_SECURE
+        value: true
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+
+  - type: redis
