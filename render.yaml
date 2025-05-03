@@ -1,19 +1,15 @@
-# render.yaml
-
+# Example render.yaml for n8n + Redis
 services:
-  # 1) Redis for prompt & call‑history storage
   - type: redis
     name: redis
     plan: starter
 
-  # 2) n8n itself, using the official Docker image
   - type: web
     name: n8n
     env: docker
-    dockerImage: n8nio/n8n:latest    # ← use dockerImage, not image
+    image: n8nio/n8n:latest
     plan: starter
     envVars:
-      # point n8n at our Redis service
       - key: REDIS_HOST
         fromService:
           name: redis
@@ -22,13 +18,12 @@ services:
         fromService:
           name: redis
           property: port
-      # secure your editor with basic auth
       - key: N8N_BASIC_AUTH_ACTIVE
         value: "true"
       - key: N8N_BASIC_AUTH_USER
         value: "<your‑username>"
       - key: N8N_BASIC_AUTH_PASSWORD
         value: "<your‑password>"
-      # optional: run in production mode
       - key: NODE_ENV
         value: production
+    # (add ports, health checks, volumes, etc. as needed)
