@@ -10,7 +10,7 @@ services:
   - type: web
     name: n8n
     env: docker
-    image: n8nio/n8n:latest
+    dockerImage: n8nio/n8n:latest    # ← use dockerImage, not image
     plan: starter
     envVars:
       # point n8n at our Redis service
