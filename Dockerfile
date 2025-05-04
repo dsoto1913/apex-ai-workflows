@@ -1,6 +1,9 @@
 # Dockerfile for n8n deployment on Render
-FROM n8nio/n8n:1.42.0
+FROM n8nio/n8n:1.39.1
+
+# (optional) ensure you’re on the right version
+RUN npm install -g n8n@1.39.1
 
 WORKDIR /root/.n8n
-RUN npm install -g n8n@1.42.0 || echo "npm install failed, retrying..." && npm install -g n8n@1.42.0 --loglevel verbose
+
 CMD ["n8n", "start"]
