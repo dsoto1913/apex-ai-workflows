@@ -1,3 +1,4 @@
+# Dockerfile for n8n deployment on Render
 FROM n8nio/n8n:latest
 
 WORKDIR /data
