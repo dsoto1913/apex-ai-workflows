@@ -1,21 +1,25 @@
+# render.yaml
 services:
+  # 1) our n8n front‑end on Render
   - type: web
-    name: apex-ai-n8n
+    name: apex‑ai‑n8n
     env: docker
-    dockerfilePath: ./Dockerfile
     plan: free
     region: oregon
+    dockerfilePath: ./Dockerfile
+    # optional health check so Render knows when your container is ready
+    healthCheckPath: /
     envVars:
       - key: N8N_HOST
-        value: apex-ai-n8n.onrender.com
+        value: apex‑ai‑n8n.onrender.com
       - key: N8N_PORT
-        value: 5678
+        value: "5678"
       - key: N8N_PROTOCOL
         value: https
       - key: NODE_ENV
         value: production
       - key: WEBHOOK_URL
-        value: https://apex-ai-n8n.onrender.com
+        value: https://apex‑ai‑n8n.onrender.com
       - key: TWILIO_ACCOUNT_SID
         sync: false
       - key: TWILIO_AUTH_TOKEN
@@ -23,7 +27,7 @@ services:
       - key: REDIS_URL
         fromService:
           type: redis
-          name: apex-ai-redis
+          name: apex‑ai‑redis
           property: connectionString
       - key: OPENAI_API_KEY
         sync: false
@@ -38,7 +42,7 @@ services:
       - key: SMTP_HOST
         value: smtp.gmail.com
       - key: SMTP_PORT
-        value: 465
+        value: "465"
       - key: SMTP_SECURE
         value: "true"
       - key: SMTP_USER
@@ -46,11 +50,9 @@ services:
       - key: SMTP_PASS
         sync: false
 
+  # 2) a free Redis to back your prompt & call‑history store
   - type: redis
-    name: apex-ai-redis
+    name: apex‑ai‑redis
     plan: free
     region: oregon
-    maxmemoryPolicy: allkeys-lru
-    ipAllowList:
-      - source: 0.0.0.0/0
-        description: Allow all IPs for testing
+
