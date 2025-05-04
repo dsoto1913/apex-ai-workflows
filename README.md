@@ -1,1 +1,1 @@
-# apex-ai-workflows
+# apex-ai-n8n
