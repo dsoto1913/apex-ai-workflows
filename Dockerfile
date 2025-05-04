@@ -1,10 +1,6 @@
-# use the official n8n Docker image
-FROM n8nio/n8n:1.39.1
+# Dockerfile for n8n deployment on Render
+FROM n8nio/n8n:1.42.0
 
-# switch back to the unprivileged user that the image sets up
-# (this is important so the config folder perms work correctly)
-USER node
-
-# start n8n
-ENTRYPOINT ["n8n"]
-CMD ["start"]
+WORKDIR /root/.n8n
+RUN npm install -g n8n@1.42.0 || echo "npm install failed, retrying..." && npm install -g n8n@1.42.0 --loglevel verbose
+CMD ["n8n", "start"]
