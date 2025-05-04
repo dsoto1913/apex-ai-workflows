@@ -1,5 +1,4 @@
 services:
-  # your n8n web service
   - type: web
     name: apex-ai-n8n
     env: docker
@@ -8,7 +7,7 @@ services:
     region: oregon
     envVars:
       - key: N8N_HOST
-        value: "apex-ai-n8n.onrender.com"
+        value: "0.0.0.0"
       - key: N8N_PORT
         value: "5678"
       - key: N8N_PROTOCOL
@@ -18,24 +17,21 @@ services:
       - key: WEBHOOK_URL
         value: "https://apex-ai-n8n.onrender.com"
       - key: TWILIO_ACCOUNT_SID
-        sync: false
+        fromSecret: "TWILIO_ACCOUNT_SID"
       - key: TWILIO_AUTH_TOKEN
-        sync: false
+        fromSecret: "TWILIO_AUTH_TOKEN"
       - key: REDIS_URL
-        fromService:
-          type: redis
-          name: apex-ai-redis
-          property: connectionString
+        value: "redis://red-d0b9s41r0fns73d99e1g:6379"
       - key: OPENAI_API_KEY
-        sync: false
+        fromSecret: "OPENAI_API_KEY"
       - key: ELEVENLABS_API_KEY
-        sync: false
+        fromSecret: "ELEVENLABS_API_KEY"
       - key: DEEPGRAM_API_KEY
-        sync: false
+        fromSecret: "DEEPGRAM_API_KEY"
       - key: GOOGLE_CLIENT_ID
-        sync: false
+        fromSecret: "GOOGLE_CLIENT_ID"
       - key: GOOGLE_CLIENT_SECRET
-        sync: false
+        fromSecret: "GOOGLE_CLIENT_SECRET"
       - key: SMTP_HOST
         value: "smtp.gmail.com"
       - key: SMTP_PORT
@@ -43,16 +39,15 @@ services:
       - key: SMTP_SECURE
         value: "true"
       - key: SMTP_USER
-        sync: false
+        fromSecret: "SMTP_USER"
       - key: SMTP_PASS
-        sync: false
+        fromSecret: "SMTP_PASS"
 
-  # a free Redis instance for prompt + call‑history storage
   - type: redis
     name: apex-ai-redis
     plan: free
     region: oregon
     maxmemoryPolicy: allkeys-lru
     ipAllowList:
-      - source: 0.0.0.0/0
-        description: Allow all IPs (for testing only)
+      - source: "0.0.0.0/0"
+        description: "Allow all IPs for testing"
