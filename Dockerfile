@@ -1,9 +1,10 @@
-# Dockerfile
+# use the official n8n Docker image
 FROM n8nio/n8n:1.39.1
 
-# Use the built‑in n8n entrypoint; no need to npm install again
-# If you ever need custom plugins, install them here
-# USER node
-# WORKDIR /home/node
+# switch back to the unprivileged user that the image sets up
+# (this is important so the config folder perms work correctly)
+USER node
 
-CMD ["n8n", "start", "--tunnel"]  
+# start n8n
+ENTRYPOINT ["n8n"]
+CMD ["start"]
