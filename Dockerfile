@@ -1,14 +1,8 @@
-# Use the official n8n image (already at v1.39.1)
+# Dockerfile
 FROM n8nio/n8n:1.39.1
 
-# If you really need to install extra packages or custom nodes, 
-# you can switch to root, install them, then switch back to node:
-# USER root
-# RUN npm install --unsafe-perm your-package
-# USER node
+# (Optional) copy in any custom credentials templates, etc, here
+# WORKDIR /root/.n8n
+# COPY custom.json /root/.n8n/custom.json
 
-# Expose the default n8n ports
-EXPOSE 5678 5679
-
-# Start n8n
-CMD ["n8n", "start"]
+# Let the base image's entrypoint handle `n8n start`
